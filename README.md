@@ -2,6 +2,10 @@
 
 Claude Code 的 WezTerm 终端通知钩子。当 Claude 需要确认操作或完成任务时，通过 macOS 系统通知提醒你。
 
+## 效果预览
+
+![通知效果](0162D5DEC88BA5EA1EE3BABB4436DF0E.png)
+
 ## 通知样式
 
 - ➡️ Bash 命令执行
@@ -12,51 +16,26 @@ Claude Code 的 WezTerm 终端通知钩子。当 Claude 需要确认操作或完
 
 ## 依赖
 
-- macOS
+- macOS（其他平台未测试，欢迎 PR）
 - [WezTerm](https://wezfurlong.org/wezterm/) 终端
-- [terminal-notifier](https://github.com/julienXX/terminal-notifier)：`brew install terminal-notifier`
-- jq（macOS 自带）
+- [terminal-notifier](https://github.com/julienXX/terminal-notifier)
+- jq
+
+```bash
+brew install wezterm terminal-notifier jq
+```
+
+安装后请在 **系统设置 → 通知** 中给 `terminal-notifier` 开启通知权限，否则通知不会显示。
 
 ## 安装
 
-1. 复制脚本到 Claude 配置目录：
-
 ```bash
-cp wezterm-notify.sh ~/.claude/wezterm-notify.sh
+git clone https://github.com/suzmii/claude-wezterm-notify.git
+cd claude-wezterm-notify
+./install.sh
 ```
 
-2. 在 `~/.claude/settings.json` 中添加 hooks：
-
-```json
-{
-  "hooks": {
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/wezterm-notify.sh",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/wezterm-notify.sh",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-3. 确保 WezTerm 设置了 `WEZTERM_PANE` 环境变量（默认已启用）。
+安装脚本会自动复制脚本到 `~/.claude/` 并配置 hooks，不影响已有配置。重启 Claude Code 生效。
 
 ## 点击通知
 
